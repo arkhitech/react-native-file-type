@@ -8,11 +8,8 @@ import React, { Component } from 'react'
 import { Platform, StyleSheet, Text, View } from 'react-native'
 import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource'
 
-import RNFS from 'react-native-fs'
 import FileType from 'react-native-file-type'
-import RNFetchBlob from 'rn-fetch-blob'
-
-let Base64 = require('js-base64').Base64
+import ReactNativeBlobUtil from 'react-native-blob-util';
 
 let JPGFile = require('./fixture/fixture.jpg');
 
@@ -32,10 +29,10 @@ export default class App extends Component<{}> {
     let photoPath = RNFS.DocumentDirectoryPath + '/photo.jpg';
     let binaryFile = resolveAssetSource(JPGFile);
 
-    RNFetchBlob.config({fileCache: true})
+    ReactNativeBlobUtil.config({fileCache: true})
       .fetch('GET', binaryFile.uri)
       .then((resp: {path: () => string}) => {
-        RNFS.moveFile(resp.path(), photoPath)
+        ReactNativeBlobUtil.fs.moveFile(resp.path(), photoPath)
           .then(() => {
             console.log('FILE WRITTEN!');
 
